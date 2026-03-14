@@ -21,3 +21,12 @@ jobs:
 
       - name: Build
         run: dotnet build SyncTray.sln --no-restore --configuration Release
+
+      - name: Publish
+        run: dotnet publish src/SyncTray/SyncTray.csproj --no-build --configuration Release --output publish
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: SyncTray
+          path: publish/
