@@ -6,7 +6,7 @@ on:
 
 env:
   # App version passed to the Inno Setup installer. Keep in sync with src/SyncTray/Constants.cs (managed by scripts/BumpVersion.ps1).
-  AppVersion: 0.0.1
+  AppVersion: 1.0.0
 
 jobs:
   build:
