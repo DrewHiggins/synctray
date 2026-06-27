@@ -4,6 +4,10 @@ on:
   pull_request:
     branches: [main]
 
+env:
+  # App version passed to the Inno Setup installer. Keep in sync with src/SyncTray/Constants.cs (managed by scripts/BumpVersion.ps1).
+  AppVersion: 0.0.1
+
 jobs:
   build:
     runs-on: windows-latest
@@ -42,7 +46,7 @@ jobs:
       - name: Build installer
         run: >
           & "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe"
-          /DAppVersion=0.0.1
+          /DAppVersion=${{ env.AppVersion }}
           /DPublishDir=..\publish
           installer\SyncTray.iss
 
