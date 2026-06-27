@@ -1,2 +1,6 @@
 **/bin
 **/obj
+
+# Build / installer outputs
+/publish/
+/installer/Output/
