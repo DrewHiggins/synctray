@@ -21,3 +21,33 @@ jobs:
 
       - name: Build
         run: dotnet build SyncTray.sln --no-restore --configuration Release
+
+      - name: Publish SyncTray
+        run: >
+          dotnet publish src/SyncTray/SyncTray.csproj
+          --configuration Release
+          --runtime win-x64
+          --self-contained true
+          --output publish
+
+      - name: Upload binary artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: SyncTray-binary
+          path: publish
+
+      - name: Install Inno Setup
+        run: choco install innosetup --no-progress --yes
+
+      - name: Build installer
+        run: >
+          & "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe"
+          /DAppVersion=0.0.1
+          /DPublishDir=..\publish
+          installer\SyncTray.iss
+
+      - name: Upload installer artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: SyncTray-installer
+          path: installer/Output/SyncTraySetup.exe

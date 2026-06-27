@@ -53,10 +53,11 @@ public sealed class SyncthingProcessManager : IDisposable
 
     private bool StartProcess()
     {
-        if (!File.Exists(Constants.SyncthingExePath))
+        var syncthingExePath = SyncthingPathResolver.Resolve();
+        if (!File.Exists(syncthingExePath))
         {
             MessageBox.Show(
-                $"Syncthing executable not found at:\n{Constants.SyncthingExePath}",
+                $"Syncthing executable not found at:\n{syncthingExePath}",
                 Constants.AppName,
                 MessageBoxButton.OK,
                 MessageBoxImage.Error
@@ -68,7 +69,7 @@ public sealed class SyncthingProcessManager : IDisposable
         {
             StartInfo = new ProcessStartInfo
             {
-                FileName = Constants.SyncthingExePath,
+                FileName = syncthingExePath,
                 Arguments = "--no-browser",
                 UseShellExecute = false,
                 RedirectStandardOutput = true,

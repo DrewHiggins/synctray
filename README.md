@@ -22,3 +22,29 @@ It auto-discovers your Syncthing config (`config.xml`), launches the daemon if i
 - **C# / .NET** — WPF app with `System.Windows.Forms.NotifyIcon` for tray integration
 - **LibSyncthing** — internal library wrapping the Syncthing REST API
 - **No external dependencies** — uses only built-in `System.Text.Json`, `System.Xml.Linq`, and `System.Net.Http`
+
+## Installation
+
+Download `SyncTraySetup.exe` from the build artifacts and run it. The installer will:
+
+- Ask whether Syncthing is already installed. If it is, you can browse for your
+  `syncthing.exe` (defaulting to the standard location when present). If not, it
+  installs Syncthing for you via `winget`.
+- Install SyncTray to `C:\Program Files\SyncTray` by default (you can change this).
+- Offer a checkbox to start SyncTray automatically when Windows starts.
+
+The chosen Syncthing path is stored in the registry under
+`HKLM\SOFTWARE\SyncTray\SyncthingPath` and read by the app at runtime.
+
+### Building the installer locally
+
+The installer is an [Inno Setup](https://jrsoftware.org/isinfo.php) script
+(`installer/SyncTray.iss`). To build it:
+
+```powershell
+dotnet publish src/SyncTray/SyncTray.csproj -c Release -r win-x64 --self-contained true -o publish
+iscc /DAppVersion=0.0.1 /DPublishDir=..\publish installer\SyncTray.iss
+```
+
+The resulting `SyncTraySetup.exe` is written to `installer/Output/`. CI also
+produces both the published binary and the installer as build artifacts.
